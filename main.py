@@ -13,6 +13,12 @@ async def connect_to_db():
 
 @app.get("/analysis")
 async def analysis(name: str = Query, age: str = Query, body = Body(...)):
+    
+		# parameter, body
+		print('name: {}'.format(name))
+		print('age: {}'.format(age))
+		print('body: {}'.format(body))
+    
 		conn = await connect_to_db()
 		try:
 			# 데이터베이스 쿼리 실행
@@ -20,9 +26,7 @@ async def analysis(name: str = Query, age: str = Query, body = Body(...)):
 			# query = "UPDATE todos SET is_complete = true WHERE id=17"
 			result = await conn.fetch(query)
 
-			# 결과 반환
 			return {"data": result}
-		
 		except Exception as e:
 			# 쿼리 실패 시 HTTPException을 발생시킵니다.
 			raise HTTPException(status_code=500, detail=str(e))
@@ -30,10 +34,8 @@ async def analysis(name: str = Query, age: str = Query, body = Body(...)):
 		finally:
 			# 데이터베이스 연결을 닫습니다.
 			await conn.close()
-		print('name: {}'.format(name))
-		print('age: {}'.format(age))
-		print('body: {}'.format(body))
-		return 'success'
+   
+
  
 if __name__ == "__main__":
 	uvicorn.run(app, host="0.0.0.0", port=8000)
